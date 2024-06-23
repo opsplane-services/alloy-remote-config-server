@@ -27,8 +27,9 @@ If you would like to use TLS / MTLS or OAuth 2.0 for this gRPC server implementa
 
 The following environment variables can be used by the application (or set throgh `.env` file):
 
-- `GRPC_PORT`: GRPC port for the config service that implements `GetConfig` operation. (default value: 8888)
-- `HTTP_PORT`: HTTP port for the additional web service to query templates and resolved configurations (default value: 8080)
+- `CONFIG_FOLDER`: Directory that should contain the static go template configuration files with `.conf.tmpl` extension. (default value: `conf`)
+- `GRPC_PORT`: GRPC port for the config service that implements `GetConfig` operation. (default value: `8888`)
+- `HTTP_PORT`: HTTP port for the additional web service to query templates and resolved configurations (default value: `8080`)
 - `USE_REDIS`: (default value: `false`)
 - `REDUS_URL`: Redis URL that is parsed at application startup if Redis is used (can contain username/password )
 - `REDIS_TTL`: TTL value that is set for the resolved configuration objects - once a config with the same id is resolved again, the TTL is re-set (default value: `259200`)
@@ -39,9 +40,9 @@ The following environment variables can be used by the application (or set throg
 ### Docker
 
 ```bash
-docker pull opsplane/alloy-remote-config-server:master
+docker pull opsplane/alloy-remote-config-server:latest
 # use -e for setting environment variables or pass .env file though a volume with -v
-docker run opsplane/alloy-remote-config-server
+docker run opsplane/alloy-remote-config-server:latest
 ```
 
 ### Local

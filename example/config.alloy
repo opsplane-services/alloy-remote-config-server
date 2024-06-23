@@ -1,0 +1,10 @@
+logging {
+    level  = "debug"
+    format = "logfmt"
+}
+
+remotecfg {
+    url        = "http://127.0.0.1:8888"
+    id         = constants.hostname
+    attributes = {"name" = "example"}
+}

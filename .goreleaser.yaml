@@ -1,0 +1,45 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - id: "alloy-remote-config-server"
+    env:
+      - CGO_ENABLED=0
+    main: ./cmd/config/main.go
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    ldflags:
+      - "-s -w -X main.version={{ .Version }} -X main.commit={{ .Commit }}"
+    goos:
+      - "darwin"
+      - "freebsd"
+      - "linux"
+      - "windows"
+    goarch:
+      - "amd64"
+      - "386"
+      - "arm"
+      - "arm64"
+    goarm:
+      - "6"
+      - "7"
+
+universal_binaries:
+  - replace: false
+
+archives:
+  - format: tar.gz
+    name_template: |-
+      {{ .ProjectName }}-{{ .Version }}_{{ .Os }}_{{ if eq .Arch "all" }}universal{{ else }}{{ .Arch }}{{ end }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if not (eq .Amd64 "v1") }}{{ .Amd64 }}{{ end }}
+    wrap_in_directory: true
+    format_overrides:
+      - goos: windows
+        format: zip
+    #replacements:
+    #  darwin: macos
+
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  name_template: "{{ .Tag }}-next"

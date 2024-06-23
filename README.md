@@ -10,7 +10,7 @@ Remote server implementation of alloy remote config API.
 See: [Grafana alloy remote config repo](https://github.com/grafana/alloy-remote-config)
 
 ### Features
-- Centralized configuration management (by static template files)
+- Centralized configuration management (by static template files - ideally use GitOps)
 - RESTful API for fetching configurations and templates
 - Keep resolved configuration (by host id) in Redis
 - Easy to deploy with Docker

@@ -8,7 +8,7 @@ require (
 	connectrpc.com/connect v1.16.2
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-redis/redis/v8 v8.11.5
-	github.com/grafana/alloy-remote-config v0.0.6
+	github.com/grafana/alloy-remote-config v0.0.9
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/net v0.26.0
 )

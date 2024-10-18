@@ -48,10 +48,30 @@ func (ImplementedCollectorServiceHandler) GetConfig(
 	return res, nil
 }
 
+func (ImplementedCollectorServiceHandler) RegisterCollector(
+	ctx context.Context,
+	req *connect.Request[v1.RegisterCollectorRequest],
+) (*connect.Response[v1.RegisterCollectorResponse], error) {
+	configID := req.Msg.GetId()
+	log.Printf("Register: %v [not used - agents are registered by getConfig call]", configID)
+	res := connect.NewResponse(&v1.RegisterCollectorResponse{})
+	return res, nil
+}
+
+func (ImplementedCollectorServiceHandler) UnregisterCollector(
+	ctx context.Context,
+	req *connect.Request[v1.UnregisterCollectorRequest],
+) (*connect.Response[v1.UnregisterCollectorResponse], error) {
+	configID := req.Msg.GetId()
+	log.Printf("Unregister: %v [not used - agents are unregistered once not accessed for long time]", configID)
+	res := connect.NewResponse(&v1.UnregisterCollectorResponse{})
+	return res, nil
+}
+
 func StartConnectGrpcServer(port int) {
 	mux := http.NewServeMux()
 	mux.Handle(collectorv1.NewCollectorServiceHandler(&ImplementedCollectorServiceHandler{}))
-	log.Println(fmt.Sprintf("Start listening (gRPC) on port %d", port))
+	log.Printf("Start listening (gRPC) on port %d", port)
 	err := http.ListenAndServe(
 		fmt.Sprintf("127.0.0.1:%d", port),
 		h2c.NewHandler(mux, &http2.Server{}),

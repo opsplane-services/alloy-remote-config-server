@@ -21,6 +21,11 @@ func Start() {
 	if len(grpcPortEnv) > 0 {
 		grpcPort, _ = strconv.Atoi(grpcPortEnv)
 	}
+	listenAddr := "0.0.0.0"
+	listenAddrEnv := os.Getenv("LISTEN_ADDR")
+	if len(listenAddrEnv) > 0 {
+		listenAddr = listenAddrEnv
+	}
 	configFolder := "conf"
 	configFolderEnv := os.Getenv("CONFIG_FOLDER")
 	if len(configFolderEnv) > 0 {
@@ -34,6 +39,6 @@ func Start() {
 	if err != nil {
 		log.Println(fmt.Sprintf("Error loading storage: %v", err))
 	}
-	go StartConnectGrpcServer(grpcPort)
-	StartRestServer(httpPort)
+	go StartConnectGrpcServer(listenAddr, grpcPort)
+	StartRestServer(listenAddr, httpPort)
 }

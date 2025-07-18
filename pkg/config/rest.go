@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func StartRestServer(port int) {
+func StartRestServer(listenAddr string, port int) {
 	r := gin.Default()
 
 	r.GET("/templates", func(c *gin.Context) {
@@ -37,5 +37,5 @@ func StartRestServer(port int) {
 		c.Data(http.StatusOK, "text/plain; charset=utf-8", []byte(config))
 	})
 
-	r.Run(fmt.Sprintf("127.0.0.1:%d", port))
+	r.Run(fmt.Sprintf("%s:%d", listenAddr, port))
 }

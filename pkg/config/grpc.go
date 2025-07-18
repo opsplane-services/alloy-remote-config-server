@@ -68,12 +68,12 @@ func (ImplementedCollectorServiceHandler) UnregisterCollector(
 	return res, nil
 }
 
-func StartConnectGrpcServer(port int) {
+func StartConnectGrpcServer(listenAddr string, port int) {
 	mux := http.NewServeMux()
 	mux.Handle(collectorv1.NewCollectorServiceHandler(&ImplementedCollectorServiceHandler{}))
 	log.Printf("Start listening (gRPC) on port %d", port)
 	err := http.ListenAndServe(
-		fmt.Sprintf("127.0.0.1:%d", port),
+		fmt.Sprintf("%s:%d", listenAddr, port),
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
 	log.Fatalf("listen failed: %v", err)

@@ -36,6 +36,7 @@ The following environment variables can be used by the application (or set throg
 - `REDUS_URL`: Redis URL that is parsed at application startup if Redis is used (can contain username/password )
 - `REDIS_TTL`: TTL value that is set for the resolved configuration objects - once a config with the same id is resolved again, the TTL is re-set (default value: `259200`)
 - `ORG_NAME`: Organization name is a global configuration that can be used to separate configs based on this namespace - therefore you can run multiple instances of this application with different organization names - but using the same Redis storage (default value: `default`)
+- `LISTEN_ADDR`: Host to listen by the GRPC/HTTP server. (default value: `0.0.0.0`)
 
 ## Usage
 

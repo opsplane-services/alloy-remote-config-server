@@ -15,15 +15,15 @@ See: [Grafana alloy remote config repo](https://github.com/grafana/alloy-remote-
 - Keep resolved configuration (by host id) in Redis
 - Easy to deploy with Docker
 
-This implementation provides gRPC endpoint (and additional HTTP endpoint), that can be used by `remotecfg` block of Grafana alloy block. The server uses the `id` and `attributes` fields to fill a predefined go template file. (where those variables can be used for templating) A template folder can be pre-defined, all the templates in that folder that ends with `.conf.tmpl` suffix will be loaded into the application. 
+This implementation provides gRPC endpoint (and additional HTTP endpoint), that can be used by `remotecfg` block of Grafana alloy block. The server uses the `id` and `local_attributes` fields to fill a predefined go template file. (where those variables can be used for templating) A template folder can be pre-defined, all the templates in that folder that ends with `.conf.tmpl` suffix will be loaded into the application. 
 
-At least a default template configuration (`default.conf.tmpl`) is required, and the tempaltes can be referenced in the `attributes` field by the names without the file extension suffix. (e.g.: `default` as `template` attribute from Grafana Alloy agent configuration - the proper template can be selected by this `template` attribute). 
+At least a default template configuration (`default.conf.tmpl`) is required, and the tempaltes can be referenced in the `local_attributes` field by the names without the file extension suffix. (e.g.: `default` as `template` attribute from Grafana Alloy agent configuration - the proper template can be selected by this `template` attribute). 
 
 The resolved configurations are also stored in the application in memory or in redis. (these can be accessed by `/configs` or `/configs/{:id}` http endpoints)
 
 If you would like to use TLS / MTLS or OAuth 2.0 for this gRPC server implementation, It's recommend to deploy the server to Kubernetes and use something like Istio and set the proper request authentication or authorization policies around the service.
 
-Note: this implementation uses `attributes` instead of `manifest` field for the remotecfg. (to be up-to-date with the alloy implementation, but this is not up-to-date with its current documentation)
+Note: this implementation uses `local_attributes` instead of `manifest` field for the remotecfg. (to be up-to-date with the alloy implementation, but this is not up-to-date with its current documentation)
 
 ## Configuration
 

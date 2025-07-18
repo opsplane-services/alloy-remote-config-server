@@ -28,7 +28,7 @@ func (ImplementedCollectorServiceHandler) GetConfig(
 	req *connect.Request[v1.GetConfigRequest],
 ) (*connect.Response[v1.GetConfigResponse], error) {
 	configID := req.Msg.GetId()
-	attributes := req.Msg.GetAttributes()
+	attributes := req.Msg.GetLocalAttributes()
 	metadata := Metadata{Id: configID, Attributes: attributes}
 	templateName, ok := attributes["template"]
 	if !ok {

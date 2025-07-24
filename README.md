@@ -23,7 +23,7 @@ The resolved configurations are also stored in the application in memory or in r
 
 If you would like to use TLS / MTLS or OAuth 2.0 for this gRPC server implementation, It's recommend to deploy the server to Kubernetes and use something like Istio and set the proper request authentication or authorization policies around the service.
 
-Note: this implementation uses `local_attributes` instead of `manifest` or `attributes` fields for the remotecfg. (to be up-to-date with the alloy implementation, but this is not up-to-date with its current documentation)
+Note: this implementation uses `attributes` instead of `manifest` or `local_attributes` fields for the remotecfg. (to be up-to-date with the alloy implementation, but this is not up-to-date with its current documentation, probably `local_attributes` will be used soon)
 
 ## Configuration
 

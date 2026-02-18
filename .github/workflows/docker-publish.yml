@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ github.repository_owner }}/alloy-remote-config-server
+          images: opsplane/alloy-remote-config-server
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}

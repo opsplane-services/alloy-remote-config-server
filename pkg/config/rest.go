@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func StartRestServer(listenAddr string, port int) {
@@ -36,6 +37,9 @@ func StartRestServer(listenAddr string, port int) {
 		}
 		c.Data(http.StatusOK, "text/plain; charset=utf-8", []byte(config))
 	})
+
+	// Add Prometheus metrics endpoint
+	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	r.Run(fmt.Sprintf("%s:%d", listenAddr, port))
 }

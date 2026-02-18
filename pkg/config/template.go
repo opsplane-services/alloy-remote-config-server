@@ -32,5 +32,8 @@ func LoadTemplates(path string) error {
 		templates[trimmedName] = tmpl
 	}
 
+	// Update metrics
+	activeTemplates.Set(float64(len(templates)))
+
 	return nil
 }

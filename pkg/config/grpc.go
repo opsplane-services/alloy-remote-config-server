@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -30,21 +31,42 @@ func (ImplementedCollectorServiceHandler) GetConfig(
 	configID := req.Msg.GetId()
 	attributes := req.Msg.GetLocalAttributes()
 	metadata := Metadata{Id: configID, Attributes: attributes}
+
 	templateName, ok := attributes["template"]
 	if !ok {
 		templateName = "default"
 	}
+
+	// Record request
+	configRequestsTotal.WithLabelValues(templateName, "started").Inc()
+
 	tmpl, ok := templates[templateName]
 	if !ok {
+		configRequestsTotal.WithLabelValues(templateName, "error_template_not_found").Inc()
 		return nil, fmt.Errorf("Template %s not found", templateName)
 	}
+
+	// Measure render duration
+	start := time.Now()
 	var resolvedConfig strings.Builder
 	err := tmpl.Execute(&resolvedConfig, metadata)
+	duration := time.Since(start).Seconds()
+	renderDuration.WithLabelValues(templateName).Observe(duration)
+
 	if err != nil {
+		configRequestsTotal.WithLabelValues(templateName, "error_render_failed").Inc()
 		return nil, err
 	}
-	globalStorage.Set(configID, resolvedConfig.String())
-	res := connect.NewResponse(&v1.GetConfigResponse{Content: resolvedConfig.String()})
+
+	result := resolvedConfig.String()
+
+	// Update metrics
+	configRequestsTotal.WithLabelValues(templateName, "success").Inc()
+	templateRendersTotal.WithLabelValues(templateName).Inc()
+	lastRenderTimestamp.WithLabelValues(templateName, configID).SetToCurrentTime()
+
+	globalStorage.Set(configID, result)
+	res := connect.NewResponse(&v1.GetConfigResponse{Content: result})
 	return res, nil
 }
 
